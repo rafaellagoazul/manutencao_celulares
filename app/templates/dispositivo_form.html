@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Novo/Editar Dispositivo{% endblock %}
+{% block content %}
+{% set dispositivo = dispositivo if dispositivo is defined else {} %}
+<h1>Formulário de Dispositivo</h1>
+<form method="post">
+  <div>
+    <label>Nome</label><br>
+    <input type="text" name="nome" value="{{ dispositivo.get('nome','') }}">
+  </div>
+  <div>
+    <label>IMEI</label><br>
+    <input type="text" name="imei" value="{{ dispositivo.get('imei','') }}">
+  </div>
+  <div>
+    <label>Modelo</label><br>
+    <input type="text" name="modelo" value="{{ dispositivo.get('modelo','') }}">
+  </div>
+  <div>
+    <label>Responsável</label><br>
+    <input type="text" name="responsavel" value="{{ dispositivo.get('responsavel','') }}">
+  </div>
+  <div>
+    <label>Status</label><br>
+    {% set st = dispositivo.get('status','') %}
+    <select name="status">
+      <option value="ativo" {{ 'selected' if st=='ativo' else '' }}>Ativo</option>
+      <option value="inativo" {{ 'selected' if st=='inativo' else '' }}>Inativo</option>
+      <option value="manutencao" {{ 'selected' if st=='manutencao' else '' }}>Em manutenção</option>
+    </select>
+  </div>
+  <div style="margin-top:1rem;">
+    <button type="submit">Salvar</button>
+    <a class="btn" href="{{ url_for('devices.lista') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

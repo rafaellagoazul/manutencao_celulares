@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Início{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <header class="mb-4">
+    <h1 class="h3 mb-1">Manutenção de Celulares</h1>
+    <p class="text-muted mb-0">Visão geral do estoque, uso e pessoas</p>
+  </header>
+  <div class="row g-3">
+    <div class="col-12 col-md-4">
+      <a class="text-decoration-none" href="/dispositivos">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Dispositivos</h5>
+            <div class="display-6">{{ total_dispositivos | default(0) }}</div>
+            <p class="text-muted mb-0">Total cadastrados</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-4">
+      <a class="text-decoration-none" href="/dispositivos?q=Em+uso">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Em uso</h5>
+            <div class="display-6">{{ total_em_uso | default(0) }}</div>
+            <p class="text-muted mb-3">Dispositivos atribuídos</p>
+            {% set td = (total_dispositivos or 0) %}
+            {% set tu = (total_em_uso or 0) %}
+            {% if td > 0 %}
+              {% set pct = (tu / td * 100) | round(1) %}
+              <div class="progress" role="progressbar" aria-label="% em uso" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100" style="height:10px;">
+                <div class="progress-bar bg-success" style="width: {{ pct }}%"></div>
+              </div>
+              <small class="text-muted">{{ pct }}% em uso</small>
+            {% else %}
+              <small class="text-muted">Sem dispositivos para calcular</small>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-4">
+      <a class="text-decoration-none" href="/pessoas">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Pessoas</h5>
+            <div class="display-6">{{ total_pessoas | default(0) }}</div>
+            <p class="text-muted mb-0">Colaboradores e gestores</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <section class="mt-4">
+    <div class="row g-3">
+      <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Buscar dispositivo</h5>
+            <form class="row g-2" action="/dispositivos" method="get" autocomplete="off">
+              <div class="col-sm-8">
+                <input type="text" class="form-control" name="q" placeholder="Buscar por IMEI, modelo ou nº do ativo">
+              </div>
+              <div class="col-sm-4 d-grid d-sm-block">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+              </div>
+            </form>
+            <small class="text-muted">Dica: você pode colar um IMEI completo (ex.: <code>123456789012345</code>).</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Acessos rápidos</h5>
+            <div class="d-grid gap-2">
+              <a class="btn btn-outline-primary" href="/dispositivos">Listar dispositivos</a>
+              <a class="btn btn-outline-secondary" href="/pessoas">Listar pessoas</a>
+              <a class="btn btn-outline-dark" href="/manutencoes">Manutenções</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<style>
+  .container { max-width: 1100px; }
+  .card { border-radius: .5rem; }
+  .display-6 { font-size: 2rem; font-weight: 600; }
+  .progress { background-color: #e9ecef; border-radius: .25rem; overflow: hidden; }
+  .progress-bar { transition: width .4s ease; }
+  @media (max-width: 576px) { .display-6 { font-size: 1.6rem; } }
+</style>
+{% endblock %}

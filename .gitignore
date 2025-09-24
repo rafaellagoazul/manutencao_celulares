@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# Envs
+.venv/
+venv/
+.env
+
+# Coverage & pytest
+.pytest_cache/
+.coverage*
+htmlcov/
+coverage.xml
+junit.xml
+
+# Builds, dist, logs
+build/
+dist/
+*.log
+
+# Local artifacts
+artifacts/
+artifacts_diag/
+*.zip
+
+# Flask specifics
+instance/
+uploads/
+logs/
+*.sqlite3
+*.db

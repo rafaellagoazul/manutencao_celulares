@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Dispositivos{% endblock %}
+{% block content %}
+<h2>Lista de Dispositivos</h2>
+{% if q %}<p>Busca: <code>{{ q }}</code></p>{% endif %}
+<ul>
+{% for d in dispositivos %}
+    <li>{{ d.modelo or 'Sem modelo' }}{% if d.ativo_numero %} (Ativo {{ d.ativo_numero }}){% endif %}</li>
+{% else %}
+    <li>Nenhum dispositivo encontrado.</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Nova/Editar Manutenção{% endblock %}
+{% block content %}
+{% set manutencao = manutencao if manutencao is defined else {} %}
+<h1>Formulário de Manutenção</h1>
+<form method="post">
+  <div>
+    <label>Dispositivo</label><br>
+    <input type="text" name="dispositivo" value="{{ manutencao.get('dispositivo','') }}">
+  </div>
+  <div>
+    <label>Problema</label><br>
+    <textarea name="problema" rows="3">{{ manutencao.get('problema','') }}</textarea>
+  </div>
+  <div>
+    <label>Diagnóstico</label><br>
+    <textarea name="diagnostico" rows="3">{{ manutencao.get('diagnostico','') }}</textarea>
+  </div>
+  <div>
+    <label>Status</label><br>
+    {% set st = manutencao.get('status','') %}
+    <select name="status">
+      <option value="aberta" {{ 'selected' if st=='aberta' else '' }}>Aberta</option>
+      <option value="em_andamento" {{ 'selected' if st=='em_andamento' else '' }}>Em andamento</option>
+      <option value="concluida" {{ 'selected' if st=='concluida' else '' }}>Concluída</option>
+    </select>
+  </div>
+  <div>
+    <label>Técnico</label><br>
+    <input type="text" name="tecnico" value="{{ manutencao.get('tecnico','') }}">
+  </div>
+  <div style="margin-top:1rem;">
+    <button type="submit">Salvar</button>
+    <a class="btn" href="{{ url_for('maintenance.lista') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

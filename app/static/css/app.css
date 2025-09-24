@@ -1,0 +1,7 @@
+
+/* Ajustes finos para Darkly */
+.hero { background: linear-gradient(135deg, #0d6efd, #6f42c1); color:#fff; }
+.card-quick { transition: transform .08s ease-in-out, box-shadow .1s ease-in-out; }
+.card-quick:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.25); }
+.table thead th { white-space: nowrap; }
+.table td, .table th { vertical-align: middle; }

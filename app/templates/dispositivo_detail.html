@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Detalhe do Dispositivo{% endblock %}
+{% block content %}
+{% set dispositivo = dispositivo if dispositivo is defined else {} %}
+<h1>Detalhe do Dispositivo</h1>
+<dl>
+  <dt>Nome</dt><dd>{{ dispositivo.get('nome', '—') }}</dd>
+  <dt>IMEI</dt><dd>{{ dispositivo.get('imei', '—') }}</dd>
+  <dt>Modelo</dt><dd>{{ dispositivo.get('modelo', '—') }}</dd>
+  <dt>Responsável</dt><dd>{{ dispositivo.get('responsavel', '—') }}</dd>
+  <dt>Status</dt><dd>{{ dispositivo.get('status', '—') }}</dd>
+</dl>
+<p style="margin-top:1rem;">
+  <a href="{{ url_for('devices.lista') }}">← Voltar para Dispositivos</a> |
+  <a href="{{ url_for('maintenance.lista') }}">Ver Manutenções</a>
+</p>
+{% endblock %}

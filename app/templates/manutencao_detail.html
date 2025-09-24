@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Detalhe da Manutenção{% endblock %}
+{% block content %}
+{% set manutencao = manutencao if manutencao is defined else {} %}
+<h1>Detalhe da Manutenção</h1>
+<dl>
+  <dt>ID</dt><dd>{{ manutencao.get('id', '—') }}</dd>
+  <dt>Dispositivo</dt><dd>{{ manutencao.get('dispositivo', '—') }}</dd>
+  <dt>Problema</dt><dd>{{ manutencao.get('problema', '—') }}</dd>
+  <dt>Diagnóstico</dt><dd>{{ manutencao.get('diagnostico', '—') }}</dd>
+  <dt>Status</dt><dd>{{ manutencao.get('status', '—') }}</dd>
+  <dt>Data de Abertura</dt><dd>{{ manutencao.get('data_abertura', '—') }}</dd>
+  <dt>Data de Conclusão</dt><dd>{{ manutencao.get('data_conclusao', '—') }}</dd>
+  <dt>Técnico</dt><dd>{{ manutencao.get('tecnico', '—') }}</dd>
+  {% if manutencao.get('anexo') %}
+    <dt>Anexo</dt><dd>{{ manutencao.get('anexo') }}</dd>
+  {% endif %}
+</dl>
+<p style="margin-top:1rem;">
+  <a href="{{ url_for('maintenance.lista') }}">← Voltar para Manutenções</a> |
+  <a href="{{ url_for('devices.lista') }}">Ver Dispositivos</a>
+</p>
+{% endblock %}

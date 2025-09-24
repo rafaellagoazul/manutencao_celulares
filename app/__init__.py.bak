@@ -1,0 +1,21 @@
+import os
+from flask import Flask
+
+def create_app():
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY=os.environ.get('SECRET_KEY', 'dev'),
+    )
+
+    # Blueprints
+    from .routes.main import bp as main_bp
+    from .routes.devices import bp as devices_bp
+    from .routes.people import bp as people_bp
+    from .routes.maintenance import bp as maintenance_bp
+
+    app.register_blueprint(main_bp)
+    app.register_blueprint(devices_bp)
+    app.register_blueprint(people_bp)
+    app.register_blueprint(maintenance_bp)
+
+    return app
