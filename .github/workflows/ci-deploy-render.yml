@@ -1,37 +1,57 @@
-name: CI & Deploy (Render)
+name: CI + Deploy (Render)
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    name: Testes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'  # mantenha alinhado com PYTHON_VERSION do Render
+
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Testes
-        run: pytest -q || true
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+      - name: Rodar testes (se existir pytest)
+        run: |
+          if python -c "import importlib,sys; sys.exit(0 if importlib.util.find_spec('pytest') else 1)"; then
+            pytest -q
+          else
+            echo "pytest não encontrado; pulando etapa de testes"
+          fi
 
   deploy:
+    name: Deploy para o Render
     needs: test
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions:
-      deployments: write
     steps:
-      - name: Disparar deploy no Render
-        uses: JorgeLNJunior/render-deploy@v1.4.5
+      - name: Checkout (opcional)
+        uses: actions/checkout@v4
+
+      - name: Disparar Deploy
+        uses: givemomentum/render-deploy@v1.6.1
         with:
-          service_id: ${{ secrets.RENDER_SERVICE_ID }}
-          api_key:    ${{ secrets.RENDER_API_KEY }}
-          wait_deploy: true
-          github_deployment: true
-          deployment_environment: production
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}   # obrigatório
+          api_key:    ${{ secrets.RENDER_API_KEY }}      # obrigatório
+          wait_deploy: true                               # aguarda ficar "live"
+          clear_cache: false
+          # Opcional: criar Deployment no GitHub (exige permissões 'deployments: write')
+          # github_deployment: true
+          # deployment_environment: 'production'
+          # github_token: ${{ secrets.GITHUB_TOKEN }}
