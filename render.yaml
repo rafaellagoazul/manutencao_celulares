@@ -1,0 +1,29 @@
+# render.yaml — Blueprint do Render para o serviço web Python
+# Doc: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: manutencao_celulares
+    runtime: python
+    plan: free
+    region: oregon
+    # Se este repo já é o mesmo do render.yaml, você pode remover "repo" e "branch"
+    repo: https://github.com/rafaellalagozzi/manutencao_celulares
+    branch: main
+
+    # Desativa o auto-deploy no Render (deploys serão disparados pelo GitHub Actions)
+    autoDeployTrigger: off  # equivalente ao antigo autoDeploy: false [1](https://render.com/docs/blueprint-spec)
+
+    buildCommand: pip install -r requirements.txt  # Python: usar pip install aqui é o padrão [1](https://render.com/docs/blueprint-spec)
+
+    # FASTAPI (padrão neste arquivo):
+    # Use o módulo/objeto da sua app (ex.: main:app). O $PORT é fornecido pelo Render.
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT  # exemplo oficial para FastAPI no Render [2](https://render.com/docs/deploy-fastapi)
+
+    envVars:
+      # Use uma versão suportada de Python; quando definido via variável, precisa ser "fully qualified"
+      - key: PYTHON_VERSION
+        value: 3.13.5  # ajuste se necessário; ver doc "Setting Your Python Version" [3](https://render.com/docs/python-version)
+
+    # Opcional: health check para zero-downtime deploys (se você tiver /health)
+    # healthCheckPath: /health
